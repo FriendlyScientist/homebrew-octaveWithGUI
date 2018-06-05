@@ -60,8 +60,8 @@ class Octave < Formula
   deprecated_option "without-check" => "without-test"
 
   unless OS.linux?
-    deprecated_option "without-gui" => "without-qt@5.7"
-    deprecated_option "without-qt5" => "without-qt@5.7"
+    deprecated_option "without-gui" => "without-qt@5.5"
+    deprecated_option "without-qt5" => "without-qt@5.5"
   end
 
   # options, enabled by default
@@ -75,12 +75,12 @@ class Octave < Formula
   option "without-qhull",          "Do not use the Qhull library (delaunay,voronoi,etc.)"
   option "without-qrupdate",       "Do not use the QRupdate package (qrdelete,qrinsert,qrshift,qrupdate)"
   if OS.linux?
-    option "with-qt@5.7",          "Compile with qt-based graphical user interface"
+    option "with-qt@5.5",          "Compile with qt-based graphical user interface"
   else
-    option "without-qt@5.7",       "Do not compile with qt-based graphical user interface"
+    option "without-qt@5.5",       "Do not compile with qt-based graphical user interface"
   end
 
-  option "without-qt@5.7",         "Do not compile with qt-based graphical user interface"
+  option "without-qt@5.5",         "Do not compile with qt-based graphical user interface"
   option "without-sundials",       "Do not use SUNDIALS library"
   option "without-suite-sparse",   "Do not use SuiteSparse (sparse matrix operations)"
   option "without-test",           "Do not perform build-time tests (not recommended)"
@@ -140,13 +140,13 @@ class Octave < Formula
 
   # recommended qt5 dependencies
   if OS.linux?
-    depends_on "qt@5.7"            => :optional
+    depends_on "qt@5.5"            => :optional
   else
-    depends_on "qt@5.7"            => :recommended
+    depends_on "qt@5.5"            => :recommended
   end
 
-  if build.with? "qt@5.7"
-    depends_on "gnuplot" => [:recommended, "with-qt@5.7"]
+  if build.with? "qt@5.5"
+    depends_on "gnuplot" => [:recommended, "with-qt@5.5"]
   else
     depends_on "gnuplot" => :recommended
   end
@@ -189,7 +189,7 @@ class Octave < Formula
         system "patch", "-p1", "-i", Pathname.pwd/"download.php", "-d", buildpath
       end
 
-      if build.with? "qt@5.7"
+      if build.with? "qt@5.5"
         libexec_qsci = libexec/"qscintilla2"
         libexec_qsci.mkpath
         resource("qscintilla2").stage do
@@ -210,7 +210,7 @@ class Octave < Formula
               s.gsub! "$$[QT_INSTALL_HEADERS]", libexec_qsci/"include"
             end
 
-            system "#{Formula["qt@5.7"].opt_bin}/qmake", "qscintilla.pro", *qsci_args
+            system "#{Formula["qt@5.5"].opt_bin}/qmake", "qscintilla.pro", *qsci_args
             system "make"
             system "make", "install"
           end
@@ -236,7 +236,7 @@ class Octave < Formula
     args << "--without-fftw3"            if build.without? "fftw"
     args << "--with-fltk-prefix=#{Formula["fltk"].opt_prefix}" if build.with? "fltk"
     args << "--without-glpk"             if build.without? "glpk"
-    args << "--without-qt"               if build.without? "qt@5.7"
+    args << "--without-qt"               if build.without? "qt@5.5"
     args << "--without-opengl"           if build.without? "opengl"
     args << "--without-framework-opengl" if build.without? "opengl"
     args << "--without-OSMesa"           if build.without? "osmesa"
@@ -301,7 +301,7 @@ class Octave < Formula
     # can cause linking problems.
     inreplace "src/mkoctfile.in.cc", /%OCTAVE_CONF_OCT(AVE)?_LINK_(DEPS|OPTS)%/, '""'
 
-    if build.with? "qt@5.7"
+    if build.with? "qt@5.5"
       # Octave does strict assumptions on the name of qscintilla2
       # see http://savannah.gnu.org/bugs/?48773
       # Also, add support for QScintilla2 2.10's libqscintilla2_qt5
@@ -324,7 +324,7 @@ class Octave < Formula
   def caveats
     s = ""
 
-    if build.with?("qt@5.7")
+    if build.with?("qt@5.5")
       s += <<-EOS.undent
 
       Octave is compiled with a graphical user interface. The start-up option --no-gui
@@ -339,7 +339,7 @@ class Octave < Formula
       s += <<-EOS.undent
 
       Octave's graphical user interface is disabled; compile Octave with the option
-      --with-qt@5.7 to enable it.
+      --with-qt@5.5 to enable it.
 
       EOS
 

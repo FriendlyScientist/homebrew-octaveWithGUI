@@ -99,7 +99,7 @@ class Octave < Formula
   depends_on "pkg-config"          => :build
 
   # essential dependencies
-  depends_on :fortran
+  depends_on "gcc"
   depends_on :x11
   depends_on "bison"               => :build
   depends_on "fontconfig"

@@ -47,7 +47,7 @@ class Octave < Formula
   # dependencies needed for head
   head do
     url "http://www.octave.org/hg/octave", :branch => "default", :using => :hg
-    depends_on :hg             => :build
+    depends_on "mercurial"     => :build
     depends_on "autoconf"      => :build
     depends_on "automake"      => :build
     depends_on "icoutils"      => :build
